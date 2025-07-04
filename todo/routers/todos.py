@@ -61,9 +61,6 @@ def get_todo_by_id(
 ):
     todo = get_todo_by_id_service(id, session)
 
-    if todo is None:
-        raise HTTPException(status_code=404, detail="Todo not found")
-
     return todo
 
 

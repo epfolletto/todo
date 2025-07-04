@@ -6,6 +6,6 @@ from todo.settings import settings
 def test_login(client):
     response = client.post('/auth/login')
 
-    assert response.status_code == status.HTTP_201_OK
+    assert response.status_code == status.HTTP_200_OK
     resp_json = response.json()['token']
     assert len(resp_json) == settings.EXPECTED_TOKEN_LENGTH

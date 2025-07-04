@@ -18,7 +18,7 @@ def test_create_todo(client, token):
         },
     )
 
-    assert response.status_code == status.HTTP_201_OK
+    assert response.status_code == status.HTTP_201_CREATED
     assert response.json()['id'] == 1
     assert response.json()['msg'] == 'Task inserted with successfully!'
 
@@ -61,6 +61,23 @@ def test_get_todo_by_id(client, session, token):
     todo = response.json()
     assert todo['title'] == "Todo 1"
     assert todo['description'] == "Description todo 1"
+
+
+def test_get_todo_by_id_not_found(client, session, token):
+    todo1 = Todo(title="Todo 1", description="Description todo 1")
+    todo2 = Todo(title="Todo 2", description="Description todo 2")
+    session.add_all([todo1, todo2])
+    session.commit()
+
+    bearer = get_bearer_token(token)
+    response = client.get('/todos/3',
+        headers={'x-token': bearer},
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    todo = response.json()
+    assert todo['detail'] == "Todo not found"
 
 
 def test_update_todo_by_id(client, session, token):
