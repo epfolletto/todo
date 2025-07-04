@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from todo.app import app
 from todo.database import get_session
-from todo.models import table_registry
+from todo.models import Todo, table_registry
 from todo.settings import settings
 
 
@@ -51,3 +51,11 @@ def session():
 def token(client):
     response = client.post('/auth/login')
     return response.json()['token']
+
+
+@pytest.fixture
+def sample_todos(session):
+    todo1 = Todo(title="Todo 1", description="Description todo 1")
+    todo2 = Todo(title="Todo 2", description="Description todo 2")
+    session.add_all([todo1, todo2])
+    session.commit()

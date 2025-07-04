@@ -1,7 +1,5 @@
 from fastapi import status
 
-from todo.models import Todo
-
 
 def get_bearer_token(token):
     return f'Bearer {token}'
@@ -23,12 +21,7 @@ def test_create_todo(client, token):
     assert response.json()['msg'] == 'Task inserted with successfully!'
 
 
-def test_list_todos(client, session, token):
-    todo1 = Todo(title="Todo 1", description="Description todo 1")
-    todo2 = Todo(title="Todo 2", description="Description todo 2")
-    session.add_all([todo1, todo2])
-    session.commit()
-
+def test_list_todos(client, session, token, sample_todos):
     bearer = get_bearer_token(token)
     response = client.get('/todos/all',
         headers={'x-token': bearer},
@@ -45,12 +38,7 @@ def test_list_todos(client, session, token):
     assert "Todo 2" in titles
 
 
-def test_get_todo_by_id(client, session, token):
-    todo1 = Todo(title="Todo 1", description="Description todo 1")
-    todo2 = Todo(title="Todo 2", description="Description todo 2")
-    session.add_all([todo1, todo2])
-    session.commit()
-
+def test_get_todo_by_id(client, session, token, sample_todos):
     bearer = get_bearer_token(token)
     response = client.get('/todos/1',
         headers={'x-token': bearer},
@@ -63,12 +51,7 @@ def test_get_todo_by_id(client, session, token):
     assert todo['description'] == "Description todo 1"
 
 
-def test_get_todo_by_id_not_found(client, session, token):
-    todo1 = Todo(title="Todo 1", description="Description todo 1")
-    todo2 = Todo(title="Todo 2", description="Description todo 2")
-    session.add_all([todo1, todo2])
-    session.commit()
-
+def test_get_todo_by_id_not_found(client, session, token, sample_todos):
     bearer = get_bearer_token(token)
     response = client.get('/todos/3',
         headers={'x-token': bearer},
@@ -80,12 +63,7 @@ def test_get_todo_by_id_not_found(client, session, token):
     assert todo['detail'] == "Todo not found"
 
 
-def test_update_todo_by_id(client, session, token):
-    todo1 = Todo(title="Todo 1", description="Description todo 1")
-    todo2 = Todo(title="Todo 2", description="Description todo 2")
-    session.add_all([todo1, todo2])
-    session.commit()
-
+def test_update_todo_by_id(client, session, token, sample_todos):
     bearer = get_bearer_token(token)
     response = client.put('/todos/1',
         headers={'x-token': bearer},
@@ -101,12 +79,7 @@ def test_update_todo_by_id(client, session, token):
     assert todo['id'] == todo['id']
 
 
-def test_delete_todo(client, session, token):
-    todo1 = Todo(title="Todo 1", description="Description todo 1")
-    todo2 = Todo(title="Todo 2", description="Description todo 2")
-    session.add_all([todo1, todo2])
-    session.commit()
-
+def test_delete_todo(client, session, token, sample_todos):
     bearer = get_bearer_token(token)
     response = client.delete('/todos/2',
         headers={'x-token': bearer},
