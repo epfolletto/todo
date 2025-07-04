@@ -1,3 +1,5 @@
+from fastapi import status
+
 from todo.models import Todo
 
 
@@ -16,7 +18,7 @@ def test_create_todo(client, token):
         },
     )
 
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_OK
     assert response.json()['id'] == 1
     assert response.json()['msg'] == 'Task inserted with successfully!'
 
@@ -26,16 +28,18 @@ def test_list_todos(client, session, token):
     todo2 = Todo(title="Todo 2", description="Description todo 2")
     session.add_all([todo1, todo2])
     session.commit()
-    
+
     bearer = get_bearer_token(token)
     response = client.get('/todos/all',
         headers={'x-token': bearer},
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
+
+    EXPECTED_LEN_TODOS = 2
 
     todos = response.json()
-    assert len(todos) >= 2
+    assert len(todos) >= EXPECTED_LEN_TODOS
     titles = [t['title'] for t in todos]
     assert "Todo 1" in titles
     assert "Todo 2" in titles
@@ -52,7 +56,7 @@ def test_get_todo_by_id(client, session, token):
         headers={'x-token': bearer},
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
     todo = response.json()
     assert todo['title'] == "Todo 1"
@@ -74,7 +78,7 @@ def test_update_todo_by_id(client, session, token):
         },
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     todo = response.json()
     assert todo['msg'] == "Task updated successfully"
     assert todo['id'] == todo['id']
@@ -91,7 +95,7 @@ def test_delete_todo(client, session, token):
         headers={'x-token': bearer},
     )
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     todo = response.json()
     assert todo['msg'] == "Task deleted successfully"
     assert todo['id'] == todo['id']

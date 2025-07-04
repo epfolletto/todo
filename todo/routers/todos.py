@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi import status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from todo.database import get_session
 from todo.schemas import (
@@ -20,8 +19,8 @@ router = APIRouter(prefix='/todos', tags=['todos'])
 
 
 @router.post(
-    '/create', 
-    response_model=TodoSchemaOutput, 
+    '/create',
+    response_model=TodoSchemaOutput,
     status_code=status.HTTP_201_CREATED
 )
 def create_todo(
@@ -37,7 +36,7 @@ def create_todo(
 
 
 @router.get(
-    '/all', 
+    '/all',
     response_model=list[TodoSchemaGetAllOutput],
     status_code=status.HTTP_200_OK
 )
@@ -51,7 +50,7 @@ def all_todos(
 
 
 @router.get(
-    '/{id}', 
+    '/{id}',
     response_model=TodoSchemaGetAllOutput,
     status_code=status.HTTP_200_OK
 )
@@ -69,8 +68,8 @@ def get_todo_by_id(
 
 
 @router.put(
-    '/{id}', 
-    response_model=TodoSchemaOutput, 
+    '/{id}',
+    response_model=TodoSchemaOutput,
     status_code=status.HTTP_200_OK
 )
 def put_todo(
@@ -88,7 +87,7 @@ def put_todo(
 
 
 @router.delete(
-    '/{id}', 
+    '/{id}',
     response_model=TodoSchemaOutput,
     status_code=status.HTTP_200_OK
 )

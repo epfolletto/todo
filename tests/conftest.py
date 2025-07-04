@@ -1,10 +1,11 @@
 import pytest
-from sqlalchemy import create_engine
-from todo.models import table_registry
-from sqlalchemy.orm import sessionmaker, Session
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
+
 from todo.app import app
 from todo.database import get_session
+from todo.models import table_registry
 from todo.settings import settings
 
 
@@ -44,8 +45,8 @@ def session():
 
     db.close()
     table_registry.metadata.drop_all(bind=engine)
-    
-    
+
+
 @pytest.fixture
 def token(client):
     response = client.post('/auth/login')
