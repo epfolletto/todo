@@ -7,3 +7,7 @@ class Settings(BaseSettings):
     )
 
     DATABASE_URL: str
+    EXPECTED_TOKEN_LENGTH: int = 13
+
+
+settings = Settings()

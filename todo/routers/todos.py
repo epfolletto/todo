@@ -1,16 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from todo.models import Todo
-from todo.schemas import TodoSchemaInput, TodoSchemaOutput, TodoSchemaGetAllOutput
 from todo.database import get_session
+from todo.schemas import (
+    TodoSchemaGetAllOutput,
+    TodoSchemaInput,
+    TodoSchemaOutput,
+)
 from todo.secutiry import validate_token
-from sqlalchemy import select
 from todo.service import (
-    create_todo_service, 
+    create_todo_service,
+    delete_todo_service,
     get_all_todos_service,
     get_todo_by_id_service,
     update_todo_service,
-    delete_todo_service
 )
 
 router = APIRouter(prefix='/todos', tags=['todos'])
@@ -18,8 +20,8 @@ router = APIRouter(prefix='/todos', tags=['todos'])
 
 @router.post('/create', response_model=TodoSchemaOutput)
 def create_todo(
-    todo: TodoSchemaInput, 
-    session=Depends(get_session), 
+    todo: TodoSchemaInput,
+    session=Depends(get_session),
     token=Depends(validate_token)
 ):
     todo_db = create_todo_service(todo, session)
@@ -31,7 +33,7 @@ def create_todo(
 
 @router.get('/all', response_model=list[TodoSchemaGetAllOutput])
 def all_todos(
-    session=Depends(get_session), 
+    session=Depends(get_session),
     token=Depends(validate_token)
 ):
     todos = get_all_todos_service(session)
@@ -42,7 +44,7 @@ def all_todos(
 @router.get('/{id}', response_model=TodoSchemaGetAllOutput)
 def get_todo_by_id(
     id: int,
-    session=Depends(get_session), 
+    session=Depends(get_session),
     token=Depends(validate_token)
 ):
     todo = get_todo_by_id_service(id, session)
@@ -57,7 +59,7 @@ def get_todo_by_id(
 def put_todo(
     id: int,
     todo: TodoSchemaInput,
-    session=Depends(get_session), 
+    session=Depends(get_session),
     token=Depends(validate_token)
 ):
     todo_updated = update_todo_service(id, todo, session)
@@ -69,9 +71,9 @@ def put_todo(
 
 
 @router.delete('/{id}', response_model=TodoSchemaOutput)
-def all_todos(
+def delete_todo(
     id: int,
-    session=Depends(get_session), 
+    session=Depends(get_session),
     token=Depends(validate_token)
 ):
     todo_deleted = delete_todo_service(id, session)

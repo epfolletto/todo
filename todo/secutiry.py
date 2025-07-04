@@ -1,7 +1,9 @@
-from fastapi import HTTPException, Header, status
 import random
-from typing import Annotated
 import time
+from typing import Annotated
+
+from fastapi import Header, HTTPException, status
+from settings import settings
 
 
 def generate_token():
@@ -9,13 +11,16 @@ def generate_token():
     timestamp = int(time.time())
 
     token = int(number_1 + str(timestamp))
-    
+
     return token
 
 
 def validate_token(x_token: Annotated[str, Header(...)]):
     if x_token is None:
-        raise HTTPException(status_code=401, detail="Missing Authorization header")
+        raise HTTPException(
+            status_code=401,
+            detail="Missing Authorization header"
+        )
 
     if not x_token.startswith("Bearer "):
         raise HTTPException(
@@ -25,7 +30,7 @@ def validate_token(x_token: Annotated[str, Header(...)]):
 
     token = x_token.removeprefix("Bearer ").strip()
 
-    if len(token) != 13:
+    if len(token) != settings.EXPECTED_TOKEN_LENGTH:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token length",
