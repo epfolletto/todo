@@ -9,6 +9,8 @@ A aplicação não possui um sistema de cadastro de usuários. A obtenção de u
     - **Key**: x-token
     - **Value**: Bearer seu_token_aqui
 
+Este token não possui nenhum tipo de validação e expiração.
+
 ## Ferramentas e tecnologias
 - [FastAPI](https://fastapi.tiangolo.com/) — Framework para criação de APIs web com suporte a operações assíncronas
 - [Poetry](https://python-poetry.org/) — Gerenciador de dependências e ambiente virtual do projeto
