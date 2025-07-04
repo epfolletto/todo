@@ -4,8 +4,8 @@ API para gerenciamento de atividades (todo list)
 
 ## Funcionamento da aplicação
 A aplicação não possui um sistema de cadastro de usuários. A obtenção de um token é feita utilizando a rota `/auth/login` e então este token deve ser adicionado no header para as demais rotas, da seguinte forma:
-- se for utilizada a documentação `/docs` para fazer requisições, basta adicionar "Bearer seu_token_aqui"
-- se for utilizada uma ferramenta de envio de requisições, como o Postman, deve-se adicionar, nos headers:
+- se for utilizada a documentação `/docs` para fazer requisições, basta adicionar "Bearer seu_token_aqui" no campo "Description"
+- se for utilizada uma ferramenta de envio de requisições, como o Postman, deve-se adicionar, no campo Headers:
     - **Key**: x-token
     - **Value**: Bearer seu_token_aqui
 
@@ -53,11 +53,18 @@ A aplicação não possui um sistema de cadastro de usuários. A obtenção de u
 
 
 ## Banco de dados
-Você deve criar dois bancos de dados em PostgreSQL: um para a aplicação e outro para testes.
+Você deve criar dois databases no PostgreSQL: um para a aplicação e outro para testes.
 
 
 ## Configurar variáveis de ambiente
-Edite o nome do arquivo `.env.example` para `.env` e edite as seguintes variáveis `DATABASE_URL` e `DATABASE_URL_TEST`, onde:
+
+1. Faça uma cópia do arquivo `.env.example`:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+No arquivo `.env` você irá editar campos das variáveis `DATABASE_URL` e `DATABASE_URL_TEST`:
 - `user` - nome do usuário
 - `password` - senha do usuário
 - `database` - nome do banco de dados da aplicação
