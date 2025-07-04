@@ -3,14 +3,14 @@ import time
 from typing import Annotated
 
 from fastapi import Header, HTTPException, status
-from settings import settings
+from todo.settings import settings
 
 
 def generate_token():
-    number_1 = str(random.randint(0, 1000))
-    timestamp = int(time.time())
+    number_1 = str(random.randint(1000, 9999))
+    timestamp = str(time.time())
 
-    token = int(number_1 + str(timestamp))
+    token = number_1 + timestamp[:5]
 
     return token
 

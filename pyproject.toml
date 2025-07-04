@@ -24,6 +24,7 @@ ruff = "^0.12.1"
 pytest = "^8.4.1"
 pytest-cov = "^6.2.1"
 taskipy = "^1.14.1"
+freezegun = "^1.5.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

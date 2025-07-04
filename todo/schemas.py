@@ -14,7 +14,7 @@ class TodoSchemaOutput(BaseModel):
 
 
 class LoginSchemaOutput(BaseModel):
-    token: int
+    token: str
 
 
 class TodoSchemaGetAllOutput(BaseModel):

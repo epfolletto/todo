@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     )
 
     DATABASE_URL: str
+    DATABASE_URL_TEST: str
     EXPECTED_TOKEN_LENGTH: int = 13
 
 

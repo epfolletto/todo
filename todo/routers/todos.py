@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi import status
 
 from todo.database import get_session
 from todo.schemas import (
@@ -6,7 +7,7 @@ from todo.schemas import (
     TodoSchemaInput,
     TodoSchemaOutput,
 )
-from todo.secutiry import validate_token
+from todo.security import validate_token
 from todo.service import (
     create_todo_service,
     delete_todo_service,
@@ -18,7 +19,11 @@ from todo.service import (
 router = APIRouter(prefix='/todos', tags=['todos'])
 
 
-@router.post('/create', response_model=TodoSchemaOutput)
+@router.post(
+    '/create', 
+    response_model=TodoSchemaOutput, 
+    status_code=status.HTTP_201_CREATED
+)
 def create_todo(
     todo: TodoSchemaInput,
     session=Depends(get_session),
@@ -31,7 +36,11 @@ def create_todo(
     }
 
 
-@router.get('/all', response_model=list[TodoSchemaGetAllOutput])
+@router.get(
+    '/all', 
+    response_model=list[TodoSchemaGetAllOutput],
+    status_code=status.HTTP_200_OK
+)
 def all_todos(
     session=Depends(get_session),
     token=Depends(validate_token)
@@ -41,7 +50,11 @@ def all_todos(
     return todos
 
 
-@router.get('/{id}', response_model=TodoSchemaGetAllOutput)
+@router.get(
+    '/{id}', 
+    response_model=TodoSchemaGetAllOutput,
+    status_code=status.HTTP_200_OK
+)
 def get_todo_by_id(
     id: int,
     session=Depends(get_session),
@@ -55,7 +68,11 @@ def get_todo_by_id(
     return todo
 
 
-@router.put('/{id}', response_model=TodoSchemaOutput)
+@router.put(
+    '/{id}', 
+    response_model=TodoSchemaOutput, 
+    status_code=status.HTTP_200_OK
+)
 def put_todo(
     id: int,
     todo: TodoSchemaInput,
@@ -70,7 +87,11 @@ def put_todo(
     }
 
 
-@router.delete('/{id}', response_model=TodoSchemaOutput)
+@router.delete(
+    '/{id}', 
+    response_model=TodoSchemaOutput,
+    status_code=status.HTTP_200_OK
+)
 def delete_todo(
     id: int,
     session=Depends(get_session),
@@ -79,6 +100,6 @@ def delete_todo(
     todo_deleted = delete_todo_service(id, session)
 
     return {
-        'msg': 'Task has been deleted successfully',
+        'msg': 'Task deleted successfully',
         'id': todo_deleted.id
     }
