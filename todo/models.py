@@ -8,7 +8,7 @@ table_registry = registry()
 
 @table_registry.mapped_as_dataclass
 class Todo:
-    __tablename_ = 'todos'
+    __tablename__ = 'todos'
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     title: Mapped[str]
